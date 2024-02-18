@@ -4,7 +4,9 @@ MAINTAINER Edward Allen Mercado
 
 ENV DB_HOST="mysql-service"
 
-RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
+RUN service apache2 restart
 
 COPY . /var/www/html/
 
