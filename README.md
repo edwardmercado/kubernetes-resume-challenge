@@ -1,3 +1,3 @@
 # The Kubernetes Resume Challenge
 
-https://cloudresumechallenge.dev/docs/the-challenge/
+[Take the challenge!](https://cloudresumechallenge.dev/docs/the-challenge/)
