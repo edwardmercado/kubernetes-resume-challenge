@@ -5,7 +5,7 @@ date_now=$(date '+%Y%m%d')
 version="v1"
 
 # Build Docker Image
-docker build -t "edwardallen/ecom-web-${current_branch}-${date_now}:${version}" . 
+docker build -t "edwardallen/ecom-web:${version}" . 
 
 # Push to Docker Hub
-docker push "edwardallen/ecom-web-${current_branch}-${date_now}:${version}"
+docker push "edwardallen/ecom-web:${version}"
