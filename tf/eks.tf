@@ -18,11 +18,50 @@ module "eks" {
   subnet_ids     = module.vpc.private_subnets
   create_kms_key = true
 
+  fargate_profiles = {
+    example = {
+      name = "${var.project-name}-profile"
+      selectors = [
+        {
+          namespace = "default"
+        }
+      ]
+    }
+  }
 
+  fargate_profile_defaults = {
+    iam_role_additional_policies = {
+      additional = aws_iam_policy.additional.arn
+    }
+  }
 
-  #   # Fargate profiles use the cluster primary security group so these are not utilized
-  #   create_cluster_security_group = false
-  #   create_node_security_group    = false
+  eks_managed_node_groups = {
+    default = {
+      ami_type       = "AL2_x86_64"
+      instance_types = ["t3.micro"]
+      subnet_ids     = module.vpc.public_subnets
+      min_size       = 1
+      max_size       = 1
+      desired_size   = 1
+    }
+  }
 
   tags = local.tags
+}
+
+resource "aws_iam_policy" "additional" {
+  name = "${var.project-name}-additional"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ec2:Describe*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
