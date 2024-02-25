@@ -5,66 +5,80 @@ module "eks" {
   cluster_version = var.cluster_version
 
   cluster_addons = {
-    kube-proxy = {}
-    vpc-cni    = {}
-    coredns = {
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent    = true
+      before_compute = true
       configuration_values = jsonencode({
-        computeType = "Fargate"
+        env = {
+          # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+          ENABLE_PREFIX_DELEGATION = "true"
+          WARM_PREFIX_TARGET       = "1"
+        }
       })
+    }
+    coredns = {
+      most_recent = true
     }
   }
 
   vpc_id                                   = module.vpc.vpc_id
-  subnet_ids                               = module.vpc.private_subnets
+  subnet_ids                               = module.vpc.public_subnets
   create_kms_key                           = true
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = true
   authentication_mode                      = "API_AND_CONFIG_MAP"
 
-  fargate_profiles = {
-    example = {
-      name = "${var.project-name}-profile"
-      selectors = [
-        {
-          namespace = "default"
-        }
-      ]
-    }
-  }
+  # fargate_profiles = {
+  #   website = {
+  #     name = "${var.project-name}-profile"
+  #     selectors = [
+  #       {
+  #         namespace = "default"
+  #         labels = {
+  #           app = "website-deployment"
+  #         }
+  #       }
+  #     ]
+  #   }
+  # }
 
-  fargate_profile_defaults = {
-    iam_role_additional_policies = {
-      additional = aws_iam_policy.additional.arn
-    }
-  }
+  # fargate_profile_defaults = {
+  #   iam_role_additional_policies = {
+  #     additional = aws_iam_policy.additional.arn
+  #   }
+  # }
 
   eks_managed_node_groups = {
     default = {
-      source_security_group_ids = [aws_security_group.remote_access.id]
+      source_security_group_ids = [aws_security_group.node_group_security_group.id]
       ami_type                  = "AL2_x86_64"
-      instance_types            = ["t3.micro"]
+      instance_types            = ["t3.medium"]
       subnet_ids                = module.vpc.public_subnets
       min_size                  = 1
       max_size                  = 1
       desired_size              = 1
+      disk_size = 50
     }
   }
 
   tags = local.tags
 }
 
-resource "aws_security_group" "remote_access" {
-  name_prefix = "${var.project-name}-remote-access"
+resource "aws_security_group" "node_group_security_group" {
+  name_prefix = "${var.project-name}-node-group"
   description = "Allow remote SSH access"
   vpc_id      = module.vpc.vpc_id
 
-  # ingress {
-  #   description = "SSH access"
-  #   from_port   = 22
-  #   to_port     = 22
-  #   protocol    = "tcp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
+  ingress {
+    description = "DB access"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
+  }
 
   # ingress {
   #   description = "HTTPS access"
