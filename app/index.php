@@ -109,10 +109,21 @@
                         $password = getenv('DB_PASSWORD');
                         $dbname = getenv('DB_NAME');
 
+                        echo '<script>console.log("DB_HOST: " . $host); </script>';
+                        echo '<script>console.log("DB_USER: " . $username); </script>';
+                        echo '<script>console.log("DB_PASSWORD: " . $password); </script>';
+                        echo '<script>console.log("DB_NAME: " . $dbname); </script>';
+
+                        echo $host;
+                        echo $username;
+                        echo $password;
+                        echo $dbname;
+
                         $link = mysqli_connect($host, $username, $password, $dbname, 3306);
                         // Check connection
                         if ($link->connect_error) {
                             die("Connection failed: " . $link->connect_error);
+                            echo '<script>console.log("Connection failed: " . $link->connect_error); </script>'; 
                         }
 
                         if ($link) {
