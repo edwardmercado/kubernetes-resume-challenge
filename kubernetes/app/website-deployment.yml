@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: website-deployment
+  name: website-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: website-deployment
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: website-deployment
+    spec:
+      containers:
+      - image: edwardallen/ecom-web:v1
+        name: ecom-web
+        ports:
+        - containerPort: 80
+        resources: {}
+        env:
+        - name: DB_HOST
+          value: "mariadb-service.default.svc.cluster.local"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: password
+        - name: DB_NAME
+          value: "ecomdb"
+status: {}

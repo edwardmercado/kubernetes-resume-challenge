@@ -103,8 +103,17 @@
             </div>
             <div class="row it_works">
               <?php
+                        
+                        $host = getenv('DB_HOST');
+                        $username = getenv('DB_USER');
+                        $password = getenv('DB_PASSWORD');
+                        $dbname = getenv('DB_NAME');
 
-                        $link = mysqli_connect('172.20.1.101', 'ecomuser', 'admin12345!', 'ecomdb');
+                        $link = mysqli_connect($host, $username, $password, $dbname, 3306);
+                        // Check connection
+                        if ($link->connect_error) {
+                            die("Connection failed: " . $link->connect_error);
+                        }
 
                         if ($link) {
                         $res = mysqli_query($link, "select * from products;");

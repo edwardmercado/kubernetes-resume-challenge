@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS ecomdb;
 
 -- Create user and grant privileges
 CREATE USER IF NOT EXISTS 'ecomuser'@'%' IDENTIFIED BY 'admin12345!';
-GRANT ALL PRIVILEGES ON ecomdb.* TO 'adminuser'@'%';
+GRANT ALL PRIVILEGES ON ecomdb.* TO 'ecomuser'@'%';
 FLUSH PRIVILEGES;
 
 USE ecomdb;
