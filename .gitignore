@@ -1,6 +1,13 @@
 .DS_Store
 .idea/
 
+# Secrets
+**/**/secrets/*
+*-password
+*.password.*
+*-username
+*.username.*
+
 # Terraform
 # Local .terraform directories
 **/.terraform/*
