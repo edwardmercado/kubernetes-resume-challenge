@@ -103,23 +103,23 @@
             </div>
             <div class="row it_works">
               <?php
-                        
+                        // env[DB_HOST] = $host;
+                        // env[DB_USER] = $username;
+                        // env[DB_PASSWORD] = $password;
+                        // env[DB_NAME] = $dbname;
+
+                        // $host = $_ENV["MARIADB_SERVICE_SERVICE_HOST"];
+                        // $username = $_ENV["DB_USER"];
+                        // $password = $_ENV["DB_PASSWORD"];
+                        // $dbname = $_ENV["DB_NAME"];
+
                         $host = getenv('DB_HOST');
                         $username = getenv('DB_USER');
                         $password = getenv('DB_PASSWORD');
                         $dbname = getenv('DB_NAME');
 
-                        echo '<script>console.log("DB_HOST: " . $host); </script>';
-                        echo '<script>console.log("DB_USER: " . $username); </script>';
-                        echo '<script>console.log("DB_PASSWORD: " . $password); </script>';
-                        echo '<script>console.log("DB_NAME: " . $dbname); </script>';
 
-                        echo $host;
-                        echo $username;
-                        echo $password;
-                        echo $dbname;
-
-                        $link = mysqli_connect($host, $username, $password, $dbname, 3306);
+                        $link = mysqli_connect($host, $username, $password, $dbname);
                         // Check connection
                         if ($link->connect_error) {
                             die("Connection failed: " . $link->connect_error);

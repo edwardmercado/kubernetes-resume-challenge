@@ -16,23 +16,20 @@ spec:
         app: website-deployment
     spec:
       containers:
-      - image: edwardallen/ecom-web:v1
+      - image: edwardallen/ecom-web@sha256:41e28bc6040056676d31531a3bc526b40b6be5a9b684323ffad3879de01aeecf
         name: ecom-web
         ports:
         - containerPort: 80
         resources: {}
         env:
         - name: DB_HOST
-          value: "mariadb-service.default.svc.cluster.local"
+          value: "mariadb-service"
         - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: mariadb-secret
-              key: username
+          value: "ecomuser"
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mariadb-secret
+              name: website-secret
               key: password
         - name: DB_NAME
           value: "ecomdb"

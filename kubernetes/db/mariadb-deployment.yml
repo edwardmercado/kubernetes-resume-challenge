@@ -18,16 +18,18 @@ spec:
         ports:
         - containerPort: 3306
         env:
-        - name: MARIADB_ROOT_PASSWORD
+        - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mariadb-secret
               key: password
-        - name: MARIADB_USER
-          valueFrom:
-            secretKeyRef:
-              name: mariadb-secret
-              key: username
+        # - name: MARIADB_USER
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mariadb-secret
+        #       key: username
+        - name: MYSQL_DATABASE
+          value: "ecomdb"
         resources: {}
         volumeMounts:
           - name: mariadb-initdb

@@ -12,6 +12,11 @@ ENV APACHE_LOG_DIR /var/log/apache2
 # Set PHP log directory
 ENV PHP_LOG_DIR /var/log/php
 
+RUN a2enmod env
+
+# Optionally, you can configure Apache to pass all environment variables to PHP
+RUN echo "PassEnv *" >> /etc/apache2/apache2.conf
+
 # Configure Logging
 # Update Apache configuration for logging
 RUN sed -i 's/ErrorLog .*/ErrorLog ${APACHE_LOG_DIR}\/error.log/' /etc/apache2/apache2.conf && \
