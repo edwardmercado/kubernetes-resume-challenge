@@ -16,7 +16,7 @@ spec:
         app: website-deployment
     spec:
       containers:
-      - image: edwardallen/ecom-web@sha256:41e28bc6040056676d31531a3bc526b40b6be5a9b684323ffad3879de01aeecf
+      - image: edwardallen/ecom-web@sha256:54ca69e757c815f7575b7e7683677e8a8cd4b9f567e0bb4a21bba572644de664
         name: ecom-web
         ports:
         - containerPort: 80
@@ -33,4 +33,9 @@ spec:
               key: password
         - name: DB_NAME
           value: "ecomdb"
+        - name: FEATURE_DARK_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: feature-toggle-config
+              key: FEATURE_DARK_MODE
 status: {}
