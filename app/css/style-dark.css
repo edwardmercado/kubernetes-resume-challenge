@@ -111,6 +111,42 @@ ul {
 
 /* End Prefix Styles css
 ============================================================================================ */
+/* Promotional Banner
+============================================================================================ */
+
+.banner {
+  background: #009579;
+}
+
+.banner__content {
+  padding: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.banner__text {
+  flex-grow: 1;
+  line-height: 1.4;
+  font-family: "Quicksand", sans-serif;
+}
+
+.banner__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.banner__text,
+.banner__close > span {
+  color: #ffffff;
+}
+
+/* End Promotional Banner
+============================================================================================ */
+/* ----------------------------- */
 /* Check_tittle
 ============================================================================================ */
 .check_tittle {

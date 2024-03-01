@@ -23,13 +23,6 @@ spec:
             secretKeyRef:
               name: mariadb-secret
               key: password
-        # - name: MARIADB_USER
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: mariadb-secret
-        #       key: username
-        - name: MYSQL_DATABASE
-          value: "ecomdb"
         resources: {}
         volumeMounts:
           - name: mariadb-initdb

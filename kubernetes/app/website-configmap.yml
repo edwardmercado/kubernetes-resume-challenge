@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: website-configmap
+data:
+  DB_NAME: "ecomdb"
+  DB_HOST: "mariadb-service"
+  DB_USER: "ecomuser"

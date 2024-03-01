@@ -16,26 +16,49 @@ spec:
         app: website-deployment
     spec:
       containers:
-      - image: edwardallen/ecom-web@sha256:54ca69e757c815f7575b7e7683677e8a8cd4b9f567e0bb4a21bba572644de664
+      - image: edwardallen/ecom-web@sha256:dc25db2cecf47348c09cf5413d94a5ccddb79cd5fafa5b8b2e57966af5443e88
         name: ecom-web
         ports:
         - containerPort: 80
         resources: {}
         env:
         - name: DB_HOST
-          value: "mariadb-service"
+          valueFrom:
+            configMapKeyRef:
+              name: website-configmap
+              key: DB_HOST
         - name: DB_USER
-          value: "ecomuser"
+          valueFrom:
+            configMapKeyRef:
+              name: website-configmap
+              key: DB_USER
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: website-secret
               key: password
         - name: DB_NAME
-          value: "ecomdb"
+          valueFrom:
+            configMapKeyRef:
+              name: website-configmap
+              key: DB_NAME
         - name: FEATURE_DARK_MODE
           valueFrom:
             configMapKeyRef:
               name: feature-toggle-config
               key: FEATURE_DARK_MODE
+        livenessProbe:
+          httpGet:
+            path: /healthcheck.php
+            port: 80
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+          periodSeconds: 15
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /db_healthcheck.php
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
 status: {}
