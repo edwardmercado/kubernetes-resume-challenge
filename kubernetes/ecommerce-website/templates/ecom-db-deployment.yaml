@@ -30,7 +30,8 @@ spec:
               secretKeyRef:
                 name: {{ .Values.database.secret.fullname | quote }}
                 key: password
-          resources: {}
+          resources: 
+            {{- toYaml .Values.database.resources | nindent 12 }}
           volumeMounts:
             - name: mariadb-initdb
               mountPath: /docker-entrypoint-initdb.d

@@ -22,6 +22,8 @@ spec:
       - name: ecom-web
         image: {{ .Values.website.image | default "edwardallen/ecom-web:v1" | quote }}
         imagePullPolicy: Always
+        resources:
+          {{- toYaml .Values.website.resources | nindent 10 }}
         ports:
           - containerPort: {{ .Values.website.port | default 80 }}
         env:

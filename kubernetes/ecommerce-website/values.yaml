@@ -28,6 +28,14 @@ database:
   storage:
     persistentVolumeName: ecom-db-pv
     persistentVolumeClaimName: ecom-db-pvc
+  
+  resources:
+    requests:
+      cpu: 1m
+      memory: 50Mi
+    limits:
+      cpu: 100m
+      memory: 300Mi
 
 
 website:
@@ -53,14 +61,22 @@ website:
     featureToggle:
       fullname: feature-toggle-config
 
+  resources:
+    requests:
+      cpu: 1m
+      memory: 10Mi
+    limits:
+      cpu: 100m
+      memory: 300Mi
+
 autoscaling:
   enabled: true
   hpa:
     fullname: ecom-app-hpa
-    minReplicas: 2
-    maxReplicas: 10
-    targetCPUUtilizationPercentage: 50
-    targetMemoryUtilizationPercentage: 50
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 95
+    targetMemoryUtilizationPercentage: 95
 
 test:
   enabled: false
