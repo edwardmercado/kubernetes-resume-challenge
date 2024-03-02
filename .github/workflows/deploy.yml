@@ -54,7 +54,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
         cluster-name: ${{ secrets.AWS_EKS_CLUSTER_NAME }}
-        chart-path: kubernetes/
+        chart-path: kubernetes/ecommerce-website/
         name: ecommerce-website
   
     
