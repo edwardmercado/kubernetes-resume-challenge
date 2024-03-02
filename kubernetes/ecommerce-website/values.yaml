@@ -24,6 +24,10 @@ database:
   configmap:
     initsql:
       fullname: ecom-db-initdb-config
+  
+  storage:
+    persistentVolumeName: ecom-db-pv
+    persistentVolumeClaimName: ecom-db-pvc
 
 
 website:

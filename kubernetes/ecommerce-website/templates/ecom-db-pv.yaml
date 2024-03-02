@@ -1,0 +1,15 @@
+{{- if .Values.database.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.database.storage.persistentVolumeName | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath: 
+    path: "/mnt/data/mysql"
+{{- end }}
