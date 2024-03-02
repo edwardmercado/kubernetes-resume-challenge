@@ -31,8 +31,8 @@ database:
   
   resources:
     requests:
-      cpu: 1m
-      memory: 50Mi
+      cpu: 10m
+      memory: 100Mi
     limits:
       cpu: 100m
       memory: 300Mi
@@ -63,8 +63,8 @@ website:
 
   resources:
     requests:
-      cpu: 1m
-      memory: 10Mi
+      cpu: 10m
+      memory: 20Mi
     limits:
       cpu: 100m
       memory: 300Mi

@@ -31,26 +31,6 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
   authentication_mode                      = "API_AND_CONFIG_MAP"
 
-  # fargate_profiles = {
-  #   website = {
-  #     name = "${var.project-name}-profile"
-  #     selectors = [
-  #       {
-  #         namespace = "default"
-  #         labels = {
-  #           app = "website-deployment"
-  #         }
-  #       }
-  #     ]
-  #   }
-  # }
-
-  # fargate_profile_defaults = {
-  #   iam_role_additional_policies = {
-  #     additional = aws_iam_policy.additional.arn
-  #   }
-  # }
-
   eks_managed_node_groups = {
     default = {
       source_security_group_ids = [aws_security_group.node_group_security_group.id]
@@ -79,14 +59,6 @@ resource "aws_security_group" "node_group_security_group" {
     protocol    = "tcp"
     cidr_blocks = [var.vpc_cidr_block]
   }
-
-  # ingress {
-  #   description = "HTTPS access"
-  #   from_port   = 443
-  #   to_port     = 443
-  #   protocol    = "tcp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
 
   egress {
     from_port        = 0
