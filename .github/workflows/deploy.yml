@@ -30,6 +30,31 @@ jobs:
     - name: Push Docker Image to Registry
       run: |
         docker push "edwardallen/ecom-web:v1"
-          
+
+  package_and_deploy_helm_chart:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Helm
+      uses: azure/setup-helm@v3
+
+    - name: Package Helm Chart
+      run: |
+        cd kubernetes/
+        helm package ecommerce-website
+        cd ecommerce-website/ 
+        helm lint
+
+    - name: Deploy Helm Chart
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.9
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        cluster-name: ${{ secrets.AWS_EKS_CLUSTER_NAME }}
+        chart-path: kubernetes/
+        name: ecommerce-website
   
     
