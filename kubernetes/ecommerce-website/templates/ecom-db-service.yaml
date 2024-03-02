@@ -1,0 +1,14 @@
+{{- if .Values.database.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.database.service.fullname | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  type: {{ .Values.database.service.type | default "ClusterIP" | quote }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.database.service.port | default 3306 }}
+  selector:
+    {{- toYaml .Values.database.labels | nindent 4 }}
+{{- end }}

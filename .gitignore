@@ -1,6 +1,10 @@
 .DS_Store
 .idea/
 
+# tgz packages
+*.tgz
+*.tgz.*
+
 # Secrets
 **/**/secrets/*
 *-password

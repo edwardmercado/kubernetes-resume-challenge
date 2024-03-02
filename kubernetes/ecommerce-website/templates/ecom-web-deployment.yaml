@@ -1,0 +1,67 @@
+{{- if .Values.website.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.website.fullname | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+{{- if .Values.website.replicas }}
+  replicas: {{ .Values.website.replicas | default 1 }}
+{{- else }}
+  replicas: {{ .Values.replicaCount | default 1 }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- toYaml .Values.website.labels | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- toYaml .Values.website.labels | nindent 8 }}
+    spec:
+      containers:
+      - name: ecom-web
+        image: {{ .Values.website.image | default "edwardallen/ecom-web:v1" | quote }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.website.port | default 80 }}
+        env:
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.website.configmap.env.fullname | quote }}
+                key: DB_HOST
+          - name: DB_USER
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.website.configmap.env.fullname | quote }}
+                key: DB_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.website.secret.fullname | quote }}
+                key: password
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.website.configmap.env.fullname | quote }}
+                key: DB_NAME
+          - name: FEATURE_DARK_MODE
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.website.configmap.featureToggle.fullname | quote }}
+                key: FEATURE_DARK_MODE
+        livenessProbe:
+          httpGet:
+            path: /healthcheck.php
+            port: 80
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+          periodSeconds: 15
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /db_healthcheck.php
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+{{- end }}

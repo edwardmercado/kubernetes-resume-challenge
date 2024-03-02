@@ -1,0 +1,14 @@
+{{- if .Values.website.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.website.service.fullname | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  type: {{ .Values.website.service.type | default "LoadBalancer" | quote }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.website.service.port | default 80 }}
+  selector:
+    {{- toYaml .Values.website.labels | nindent 4 }}
+{{- end }}

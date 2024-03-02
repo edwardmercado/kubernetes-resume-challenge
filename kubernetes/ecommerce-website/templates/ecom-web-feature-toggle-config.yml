@@ -1,0 +1,9 @@
+{{- if .Values.website.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.website.configmap.featureToggle.fullname | quote }}
+  namespace: {{ .Values.namespace | quote }}
+data:
+  FEATURE_DARK_MODE: "true"
+{{- end }}
